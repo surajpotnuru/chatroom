@@ -1,0 +1,8 @@
+type Room @model(timestamps:{createdAt: "createdOn"}) {
+  id: ID!
+  messages: [String]
+}
+
+type Mutation {
+  addMessageToRoom(roomId: String!, message: String!): Room!
+}

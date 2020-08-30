@@ -1,0 +1,20 @@
+{
+	"api": {
+		"chatroom": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"defaultAuthentication": {
+						"authenticationType": "API_KEY",
+						"apiKeyConfig": {
+							"apiKeyExpirationDays": 90,
+							"description": "Chatroom GraphQL API Key"
+						}
+					},
+					"additionalAuthenticationProviders": []
+				}
+			}
+		}
+	}
+}

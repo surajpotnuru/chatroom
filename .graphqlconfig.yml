@@ -1,0 +1,18 @@
+projects:
+  chatroom-dev:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - src/graphql/**/*.js
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: src/graphql
+        region: us-east-1
+        apiId: 3v2rhunsrjc6nacern4v4pw2oy
+        maxDepth: 2
+extensions:
+  amplify:
+    version: 3
