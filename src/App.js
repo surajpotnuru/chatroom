@@ -1,5 +1,6 @@
 import React from 'react';
 import uuid from 'react-uuid';
+import queryString from 'query-string';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css';
@@ -24,17 +25,30 @@ class App extends React.Component {
 			userName: ''
 		};
 	}
+
+	componentDidMount() {
+		if (queryString.parse(window.location.search)["_joinroomid"] === null || queryString.parse(window.location.search)["_joinroomid"] === '' || queryString.parse(window.location.search)["_joinroomid"] === undefined)
+		{} else {
+			this.setState({joinRoomName: queryString.parse(window.location.search)["_joinroomid"]}, () => {
+				this.joinRoomHandler();
+			});
+		}
+	}
 	
 	createRoomHandler = () => {
-		let data = {
-			id: this.state.roomName,
-			messages: ["Room: Welcome to the room !!"]
-		};
-		API.graphql(graphqlOperation(mutations.createRoom, {input: data})).then((data) => {
-			alert("Room Created");
-		}).catch((e) => {
-			alert("Error !!");
-		});
+		if (this.state.roomName === '' || this.state.roomName === null){
+			alert('Room Name cannot be empty !!')
+		} else {
+			let data = {
+				id: this.state.roomName,
+				messages: ["Room: Welcome to the room !!"]
+			};
+			API.graphql(graphqlOperation(mutations.createRoom, {input: data})).then((data) => {
+				alert("Room Created");
+			}).catch((e) => {
+				alert("Error !!");
+			});
+		}
 	};
 
 	sendMessage = () => {
@@ -67,7 +81,10 @@ class App extends React.Component {
 			let getMessagesQueryString = getMessagesQuery(this.state.activeRoomName);
 			API.graphql(graphqlOperation(getMessagesQueryString, {input: {id: this.state.activeRoomName}})).then((data) => {
 				this.setState({messages: data.data.getRoom.messages}, () => {
+					let mBox = document.getElementById("messagesListBox");
+					mBox.scrollTo(0, mBox.scrollHeight);
 				});
+				// eslint-disable-next-line
 				const subscription = API.graphql(graphqlOperation(subscriptions.messageAddedToRoom)).subscribe((data) => {
 					this.setState({messages: data.value.data.messageAddedToRoom.messages},() => {
 						let mBox = document.getElementById("messagesListBox");
@@ -104,11 +121,23 @@ class App extends React.Component {
 		return a;
 	};
 
+	copyRoomHandler = () => {
+		let copyUrl = window.location.origin + "/?_joinroomid=" + encodeURIComponent(this.state.activeRoomName);
+		navigator.clipboard.writeText(copyUrl).then(() => {
+			alert("Room URL Copied");
+		}).catch((err) => {
+			alert("Error occured while copying");
+		})
+	};
+
+
 	render() {
 		return (
 			<React.Fragment>
 				<div className="container container-wrapper">
 					<h5>React - AppSync Chatroom</h5>
+				</div>
+				<div className="container container-wrapper">
 					<div className="input-group input-group-sm mb-3">
 						<div className="input-group-prepend">
 							<span className="input-group-text small-bold" id="inputGroup-sizing-sm">Room Name</span>
@@ -126,6 +155,7 @@ class App extends React.Component {
 						onChange={this.joinRoomNameChangeHandler} />
 						<div className="input-group-append">
 							<button onClick={this.joinRoomHandler} className="btn btn-success btn-sm small-bold">Join Room</button>
+							<button onClick={this.copyRoomHandler} className="btn btn-outline-secondary btn-sm small-bold">Copy URL</button>
 						</div>
 					</div>
 					<hr></hr>
@@ -153,8 +183,8 @@ class App extends React.Component {
 							}
 						</div>
 						<div className="input-group input-group-sm message-input-box mb-3">
-							<input type="text" placeholder = "Type Message" className="form-control" aria-label="Message" aria-describedby="inputGroup-sizing-sm"
-							value = {this.state.currentMessage} onChange={this.currentMessageChanged}/>
+							<textarea type="text" placeholder = "Type Message" className="form-control" aria-label="Message" aria-describedby="inputGroup-sizing-sm"
+							value = {this.state.currentMessage} onChange={this.currentMessageChanged}></textarea>
 							<div className="input-group-append">
 								<button className="btn btn-success btn-sm small-bold" onClick={this.sendMessage}><i className="far fa-paper-plane"></i></button>
 							</div>

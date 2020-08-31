@@ -15,7 +15,9 @@
     position: relative;
     display: block;
 }
-.message-input-box {
+.message-input-box textarea {
+    height: 31px !important;
+    resize: none;
 }
 .messages-list-box {
     height: 100%;
@@ -31,4 +33,5 @@
 }
 .message-small {
     overflow-wrap: break-word !important;
+    white-space: pre-line;
 }

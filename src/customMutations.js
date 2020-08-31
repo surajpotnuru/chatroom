@@ -1,7 +1,7 @@
 function addMessageToRoomCustom(roomId, message) {
     let mutation = `
         mutation AddMessageToRoom {
-            addMessageToRoom(roomId: "${roomId}", message: "${message}") {
+            addMessageToRoom(roomId: "${roomId}", message: """${message}""") {
                 id
                 messages
                 createdOn
