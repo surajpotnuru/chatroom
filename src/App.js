@@ -123,7 +123,7 @@ class App extends React.Component {
 
 	copyRoomHandler = () => {
 		let copyUrl = window.location.origin + "/?_joinroomid=" + encodeURIComponent(this.state.activeRoomName);
-		alert(copyUrl);
+		prompt("Please copy below URL",copyUrl);
 		// navigator.permissions.query({name: "clipboard-write"}).then((result) => {
 		// 	if (result.state === "granted" || result.state === "prompt") {
 		// 		console.log("Copy permissions granted");
