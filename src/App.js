@@ -169,7 +169,7 @@ class App extends React.Component {
 						<div className="input-group-prepend">
 							<span className="input-group-text small-bold" id="inputGroup-sizing-sm">Username</span>
 						</div>
-						<input type="text" className="form-control" aria-label="Join Room Name" aria-describedby="inputGroup-sizing-sm" value = {this.state.userName}
+						<input type="text" placeholder = "Enter your name" className="form-control" aria-label="Username" aria-describedby="inputGroup-sizing-sm" value = {this.state.userName}
 						onChange={this.userNameChangeHandler} />
 					</div>
 					<div className="messages-wrapper">
