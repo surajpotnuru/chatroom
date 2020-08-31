@@ -123,11 +123,17 @@ class App extends React.Component {
 
 	copyRoomHandler = () => {
 		let copyUrl = window.location.origin + "/?_joinroomid=" + encodeURIComponent(this.state.activeRoomName);
-		navigator.clipboard.writeText(copyUrl).then(() => {
-			alert("Room URL Copied");
-		}).catch((err) => {
-			alert("Error occured while copying");
-		})
+		alert(copyUrl);
+		// navigator.permissions.query({name: "clipboard-write"}).then((result) => {
+		// 	if (result.state === "granted" || result.state === "prompt") {
+		// 		console.log("Copy permissions granted");
+		// 		navigator.clipboard.writeText(copyUrl).then(() => {
+		// 			alert("Room URL Copied");
+		// 		},(err) => {
+		// 			alert("Error occured while copying");
+		// 		});		
+		// 	}
+		// });
 	};
 
 
