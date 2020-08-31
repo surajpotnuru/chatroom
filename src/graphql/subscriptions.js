@@ -2,9 +2,12 @@
 // this is an auto generated file. This will be overwritten
 
 export const messageAddedToRoom = /* GraphQL */ `
-  subscription MessageAddedToRoom {
-    messageAddedToRoom {
+  subscription MessageAddedToRoom($id: String!) {
+    messageAddedToRoom(id: $id) {
+      id
       messages
+      createdOn
+      updatedAt
     }
   }
 `;

@@ -8,6 +8,6 @@ type Mutation {
 }
 
 type Subscription {
-  messageAddedToRoom: Room
+  messageAddedToRoom(id: String!): Room
   @aws_subscribe(mutations: ["addMessageToRoom"])
 }

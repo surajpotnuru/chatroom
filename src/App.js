@@ -5,10 +5,10 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css';
 import addMessageToRoomCustom from './customMutations';
+import messageAddedSubscription from './customSubscriptions';
 import getMessagesQuery from './customQueries';
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from './graphql/mutations';
-import * as subscriptions from './graphql/subscriptions';
 import awsconfig from './aws-exports';
 Amplify.configure(awsconfig);
 
@@ -22,7 +22,8 @@ class App extends React.Component {
 			activeRoomName: '',
 			currentMessage: '',
 			messages: [],
-			userName: ''
+			userName: '',
+			prevSubscription: ''
 		};
 	}
 
@@ -84,12 +85,19 @@ class App extends React.Component {
 					let mBox = document.getElementById("messagesListBox");
 					mBox.scrollTo(0, mBox.scrollHeight);
 				});
-				// eslint-disable-next-line
-				const subscription = API.graphql(graphqlOperation(subscriptions.messageAddedToRoom)).subscribe((data) => {
+				if (this.state.prevSubscription !== ''){
+					this.state.prevSubscription.unsubscribe();
+				}
+				let subscriptionString = messageAddedSubscription(this.state.activeRoomName);
+				const subscription = API.graphql(graphqlOperation(subscriptionString, {
+					input: {roomId: this.state.activeRoomName}
+				})).subscribe((data) => {
 					this.setState({messages: data.value.data.messageAddedToRoom.messages},() => {
 						let mBox = document.getElementById("messagesListBox");
 						mBox.scrollTo(0, mBox.scrollHeight);
 					});
+				});
+				this.setState({prevSubscription: subscription},() => {
 				});
 			}).catch((e) => {
 				alert("Error occured when fetching messages");
@@ -126,7 +134,6 @@ class App extends React.Component {
 		prompt("Please copy below URL",copyUrl);
 		// navigator.permissions.query({name: "clipboard-write"}).then((result) => {
 		// 	if (result.state === "granted" || result.state === "prompt") {
-		// 		console.log("Copy permissions granted");
 		// 		navigator.clipboard.writeText(copyUrl).then(() => {
 		// 			alert("Room URL Copied");
 		// 		},(err) => {
