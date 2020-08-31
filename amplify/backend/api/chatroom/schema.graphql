@@ -6,3 +6,8 @@ type Room @model(timestamps:{createdAt: "createdOn"}) {
 type Mutation {
   addMessageToRoom(roomId: String!, message: String!): Room!
 }
+
+type Subscription {
+  messageAddedToRoom: Room
+  @aws_subscribe(mutations: ["addMessageToRoom"])
+}

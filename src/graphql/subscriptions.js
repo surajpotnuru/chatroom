@@ -1,6 +1,13 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const messageAddedToRoom = /* GraphQL */ `
+  subscription MessageAddedToRoom {
+    messageAddedToRoom {
+      messages
+    }
+  }
+`;
 export const onCreateRoom = /* GraphQL */ `
   subscription OnCreateRoom {
     onCreateRoom {

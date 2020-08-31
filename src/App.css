@@ -16,8 +16,6 @@
     display: block;
 }
 .message-input-box {
-    position: absolute !important;
-    bottom: 0px;
 }
 .messages-list-box {
     height: 100%;
@@ -25,4 +23,12 @@
     border: 1px solid lightgray;
     position: relative;
     display: block;
+    overflow: auto;
+}
+.no-margin {
+    margin: 0px !important;
+    border-top: 0px !important;
+}
+.message-small {
+    overflow-wrap: break-word !important;
 }
